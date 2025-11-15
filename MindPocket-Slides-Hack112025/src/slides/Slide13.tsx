@@ -16,12 +16,12 @@ export default function Slide13() {
         </p>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="flex-1 grid grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-        {/* Left: App Preview */}
+      {/* Main Content Grid - Asymmetric layout favoring app */}
+      <div className="flex-1 grid grid-cols-[1.8fr,1fr] gap-10 items-center max-w-6xl mx-auto w-full">
+        {/* Left: App Preview - Larger */}
         <div className="flex flex-col gap-4">
-          <div className="glass-card p-3 rounded-3xl">
-            <div className="relative w-full" style={{ paddingBottom: '140%', maxHeight: '600px' }}>
+          <div className="glass-card p-4 rounded-3xl">
+            <div className="relative w-full" style={{ paddingBottom: '165%' }}>
               <iframe 
                 src="https://mindpocket.lolorein.com"
                 className="absolute top-0 left-0 w-full h-full rounded-2xl border-2 border-primary/20"
@@ -37,39 +37,39 @@ export default function Slide13() {
           </div>
         </div>
 
-        {/* Right: QR Codes */}
-        <div className="flex flex-col gap-8 items-center justify-center">
+        {/* Right: QR Codes - Compact */}
+        <div className="flex flex-col gap-6 items-center justify-center">
           {/* QR Code 1 */}
-          <div className="glass-card p-6 rounded-2xl w-full max-w-sm">
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex items-center gap-2 mb-2">
-                <QrCode className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold">Acceso Web</h3>
+          <div className="glass-card p-5 rounded-2xl w-full">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
+                <QrCode className="w-4 h-4 text-primary" />
+                <h3 className="text-base font-semibold">Acceso Web</h3>
               </div>
               <img 
                 src="/nXZ682.svg" 
                 alt="QR Code - Acceso Web" 
-                className="w-56 h-56 rounded-xl bg-white p-2"
+                className="w-44 h-44 rounded-xl bg-white p-2"
               />
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-xs text-muted-foreground text-center mt-1">
                 Abre MindPocket en tu navegador móvil
               </p>
             </div>
           </div>
 
           {/* QR Code 2 */}
-          <div className="glass-card p-6 rounded-2xl w-full max-w-sm">
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex items-center gap-2 mb-2">
-                <QrCode className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold">Demo Rápida</h3>
+          <div className="glass-card p-5 rounded-2xl w-full">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2 mb-1">
+                <QrCode className="w-4 h-4 text-primary" />
+                <h3 className="text-base font-semibold">Demo Rápida</h3>
               </div>
               <img 
                 src="/Untitled.svg" 
                 alt="QR Code - Demo Rápida" 
-                className="w-56 h-56 rounded-xl bg-white p-2"
+                className="w-44 h-44 rounded-xl bg-white p-2"
               />
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-xs text-muted-foreground text-center mt-1">
                 Prueba las funciones principales
               </p>
             </div>
