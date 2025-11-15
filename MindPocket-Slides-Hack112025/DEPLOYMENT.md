@@ -18,18 +18,14 @@ cd /Users/lorenzoreinoso/Desktop/presentations/MindPocket-Slides-Hack112025
 npm install
 ```
 
-### 2. Instalar dependencias de Pulumi
+### 2. Configurar Pulumi
 
 ```bash
-cd infra
-npm install
-```
+cd Infraestructura
 
-### 3. Configurar Pulumi
-
-```bash
-# Inicializar el stack (solo primera vez)
-pulumi stack init dev
+# El stack ya está inicializado como pocketMind-slides
+# Si necesitas crear uno nuevo:
+# pulumi stack init pocketMind-slides
 
 # Configurar la región de AWS
 pulumi config set aws:region us-east-1
@@ -58,10 +54,11 @@ git push -u origin main
 
 ### 2. Actualizar la configuración de Pulumi
 
-Edita `infra/index.ts` y actualiza la línea del repositorio:
+Edita `Infraestructura/Pulumi.yaml` y actualiza la línea del repositorio:
 
-```typescript
-const repository = "https://github.com/TU_USUARIO/presentations";
+```yaml
+variables:
+  repository: https://github.com/TU_USUARIO/presentations
 ```
 
 ## 🚀 Deployment
@@ -69,7 +66,7 @@ const repository = "https://github.com/TU_USUARIO/presentations";
 ### Opción 1: Deployment completo
 
 ```bash
-cd infra
+cd Infraestructura
 pulumi up
 ```
 
@@ -78,7 +75,7 @@ Pulumi te mostrará un preview de los recursos que se crearán. Revisa y confirm
 ### Opción 2: Preview sin aplicar cambios
 
 ```bash
-cd infra
+cd Infraestructura
 pulumi preview
 ```
 
@@ -111,7 +108,7 @@ Cada vez que hagas push a la rama `main` de tu repositorio, Amplify automáticam
 ### Ver el estado actual
 
 ```bash
-cd infra
+cd Infraestructura
 pulumi stack
 ```
 
@@ -139,13 +136,15 @@ Si tu repositorio es privado, necesitarás configurar un token de acceso:
 pulumi config set --secret githubToken YOUR_GITHUB_TOKEN
 ```
 
-Y actualiza `infra/index.ts`:
+Y actualiza `Infraestructura/Pulumi.yaml`:
 
-```typescript
-const amplifyApp = new aws.amplify.App(`${projectName}-app`, {
-    // ... otras configuraciones
-    accessToken: config.requireSecret("githubToken"),
-});
+```yaml
+resources:
+  amplifyApp:
+    type: aws:amplify:App
+    properties:
+      accessToken: ${githubToken}
+      # ... otras configuraciones
 ```
 
 ## 🐛 Troubleshooting
@@ -158,7 +157,7 @@ const amplifyApp = new aws.amplify.App(`${projectName}-app`, {
 ### Error: "Build failed"
 
 - Revisa los logs en la consola de AWS Amplify
-- Verifica que el `buildSpec` en `infra/index.ts` sea correcto
+- Verifica que el `buildSpec` en `Infraestructura/Pulumi.yaml` sea correcto
 - Asegúrate de que todas las dependencias estén en `package.json`
 
 ### Error: "Access denied"

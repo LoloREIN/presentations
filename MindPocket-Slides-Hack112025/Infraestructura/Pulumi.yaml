@@ -1,0 +1,93 @@
+name: mindpocket-slides
+description: Presentación web de MindPocket para Hack112025
+runtime: yaml
+
+variables:
+  projectName: mindpocket-slides
+  repository: https://github.com/LoloREIN/presentations
+  branch: main
+  githubToken: 
+    fn::secret: ${githubToken}
+
+resources:
+  # IAM Role para Amplify
+  amplifyRole:
+    type: aws:iam:Role
+    properties:
+      assumeRolePolicy:
+        fn::toJSON:
+          Version: "2012-10-17"
+          Statement:
+            - Action: sts:AssumeRole
+              Effect: Allow
+              Principal:
+                Service: amplify.amazonaws.com
+      tags:
+        Name: ${projectName}-amplify-role
+        Project: ${projectName}
+
+  # Attach policy to Amplify role
+  amplifyPolicy:
+    type: aws:iam:RolePolicyAttachment
+    properties:
+      role: ${amplifyRole.name}
+      policyArn: arn:aws:iam::aws:policy/AdministratorAccess-Amplify
+
+  # Amplify App
+  amplifyApp:
+    type: aws:amplify:App
+    properties:
+      name: ${projectName}
+      repository: ${repository}
+      accessToken: ${githubToken}
+      iamServiceRoleArn: ${amplifyRole.arn}
+      buildSpec: |
+        version: 1
+        frontend:
+          phases:
+            preBuild:
+              commands:
+                - cd MindPocket-Slides-Hack112025
+                - npm ci
+            build:
+              commands:
+                - npm run build
+          artifacts:
+            baseDirectory: MindPocket-Slides-Hack112025/dist
+            files:
+              - '**/*'
+          cache:
+            paths:
+              - MindPocket-Slides-Hack112025/node_modules/**/*
+      customRules:
+        - source: "/<*>"
+          status: "404"
+          target: "/index.html"
+      environmentVariables:
+        _LIVE_UPDATES:
+          fn::toJSON:
+            - pkg: node
+              type: nvm
+              version: "18"
+      tags:
+        Name: ${projectName}
+        Project: ${projectName}
+
+  # Amplify Branch
+  amplifyBranch:
+    type: aws:amplify:Branch
+    properties:
+      appId: ${amplifyApp.id}
+      branchName: ${branch}
+      enableAutoBuild: true
+      framework: React
+      stage: DEVELOPMENT
+      tags:
+        Name: ${projectName}-${branch}
+
+outputs:
+  amplifyAppId: ${amplifyApp.id}
+  amplifyAppArn: ${amplifyApp.arn}
+  amplifyDefaultDomain: ${amplifyApp.defaultDomain}
+  amplifyBranchName: ${amplifyBranch.branchName}
+  appUrl: https://${branch}.${amplifyApp.defaultDomain}

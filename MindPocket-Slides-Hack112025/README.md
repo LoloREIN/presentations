@@ -19,7 +19,7 @@ Página web de presentación para MindPocket, creada con Vite+React y hosteada e
 - **TailwindCSS** - Styling
 - **Lucide React** - Iconos
 - **AWS Amplify** - Hosting
-- **Pulumi** - Infrastructure as Code
+- **Pulumi (YAML)** - Infrastructure as Code
 
 ## 📦 Instalación
 
@@ -41,12 +41,12 @@ npm run preview
 
 El proyecto se despliega automáticamente en AWS Amplify usando Pulumi.
 
-```bash
-# Desde el directorio del proyecto
-cd /Users/lorenzoreinoso/Desktop/presentations/MindPocket-Slides-Hack112025
+### Configuración de Pulumi
 
-# Deploy con Pulumi (desde directorio infra)
-cd infra
+```bash
+cd Infraestructura
+pulumi stack init pocketMind-slides
+pulumi config set aws:region us-east-1
 pulumi up
 ```
 

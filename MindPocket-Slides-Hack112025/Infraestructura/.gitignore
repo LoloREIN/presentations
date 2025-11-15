@@ -1,0 +1,5 @@
+*.log
+Pulumi.*.yaml
+!Pulumi.yaml
+# Importante: El Pulumi.yaml contiene el token, considera moverlo a config
+.pulumi/
