@@ -1,4 +1,4 @@
-import { Smartphone } from 'lucide-react'
+import { Smartphone, QrCode } from 'lucide-react'
 
 export default function Slide13() {
   return (
@@ -15,8 +15,9 @@ export default function Slide13() {
         </p>
       </div>
 
-      <div className="flex-1 flex items-center justify-center">
-        <div className="glass-card p-4 rounded-3xl w-full max-w-md mx-auto">
+      <div className="flex-1 flex items-center justify-center gap-8">
+        {/* App Preview */}
+        <div className="glass-card p-4 rounded-3xl w-full max-w-sm">
           <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
             <iframe 
               src="https://mindpocket.lolorein.com"
@@ -25,6 +26,39 @@ export default function Slide13() {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               loading="lazy"
             />
+          </div>
+        </div>
+
+        {/* QR Codes Column */}
+        <div className="flex flex-col gap-6 items-center">
+          {/* QR Code 1 */}
+          <div className="glass-card p-4 rounded-2xl">
+            <div className="flex flex-col items-center gap-2">
+              <img 
+                src="/nXZ682.svg" 
+                alt="QR Code 1" 
+                className="w-48 h-48 rounded-lg"
+              />
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <QrCode className="w-4 h-4" />
+                <span>Escanea con tu móvil</span>
+              </div>
+            </div>
+          </div>
+
+          {/* QR Code 2 */}
+          <div className="glass-card p-4 rounded-2xl">
+            <div className="flex flex-col items-center gap-2">
+              <img 
+                src="/Untitled.svg" 
+                alt="QR Code 2" 
+                className="w-48 h-48 rounded-lg"
+              />
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <QrCode className="w-4 h-4" />
+                <span>O prueba aquí</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
