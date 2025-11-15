@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate MindPocket Architecture Diagram
+Generate MindPocket Architecture Diagram - Simplified Version
 Requires: pip install diagrams
 """
 
@@ -12,34 +12,34 @@ from diagrams.aws.integration import SQS
 from diagrams.aws.network import APIGateway
 from diagrams.aws.security import Cognito
 from diagrams.aws.mobile import Amplify
-from diagrams.aws.ml import Transcribe, Sagemaker
+from diagrams.aws.ml import Sagemaker
 from diagrams.onprem.client import Users
 from diagrams.saas.chat import Telegram
 from diagrams.programming.framework import React
 
-# Configure diagram
+# Configure diagram - cleaner layout
 graph_attr = {
-    "fontsize": "16",
+    "fontsize": "18",
     "bgcolor": "transparent",
-    "pad": "0.5",
-    "splines": "ortho",
-    "nodesep": "0.8",
-    "ranksep": "1.2"
+    "pad": "1.0",
+    "splines": "polyline",
+    "nodesep": "1.5",
+    "ranksep": "2.0"
 }
 
 node_attr = {
-    "fontsize": "14",
+    "fontsize": "15",
     "style": "filled",
     "fillcolor": "#1a1b26",
     "fontcolor": "#a9b1d6",
     "color": "#7aa2f7",
-    "penwidth": "2"
+    "penwidth": "2.5"
 }
 
 edge_attr = {
     "color": "#7aa2f7",
-    "penwidth": "2",
-    "arrowsize": "0.8"
+    "penwidth": "2.5",
+    "arrowsize": "1.0"
 }
 
 with Diagram(
@@ -55,71 +55,47 @@ with Diagram(
     
     # Users & Input
     user = Users("Usuario")
-    telegram = Telegram("Telegram Bot")
+    telegram = Telegram("Telegram\nBot")
     
-    with Cluster("Frontend"):
-        amplify = Amplify("Amplify Hosting")
-        cognito = Cognito("Cognito Auth")
-        react = React("Next.js App")
-        
-        cognito >> Edge(label="auth") >> react
-        react >> amplify
+    with Cluster("Frontend", graph_attr={"bgcolor": "#1a1b2640"}):
+        react = React("Next.js\nApp")
+        amplify = Amplify("Amplify")
+        cognito = Cognito("Cognito")
     
-    with Cluster("API Layer"):
-        api_gateway = APIGateway("API Gateway")
-        telegram_lambda = Lambda("Telegram\nWebhook")
-        get_items_lambda = Lambda("Get Items")
-        get_item_lambda = Lambda("Get Item")
-        delete_lambda = Lambda("Delete Item")
+    with Cluster("API & Processing", graph_attr={"bgcolor": "#7aa2f740"}):
+        api_gateway = APIGateway("API\nGateway")
+        lambdas = Lambda("Lambda\nFunctions")
+        process_queue = SQS("SQS\nQueue")
     
-    with Cluster("Processing"):
-        process_queue = SQS("Process\nQueue")
-        dlq = SQS("Dead Letter\nQueue")
-        process_lambda = Lambda("Process\nTikTok\n(All-in-one)")
+    with Cluster("AI Services", graph_attr={"bgcolor": "#9d7cd840"}):
+        google_speech = Sagemaker("Google\nSpeech")
+        bedrock = Sagemaker("Bedrock\nAI")
     
-    with Cluster("AI Services"):
-        google_speech = Sagemaker("Google Speech\n(Transcription)")
-        bedrock = Sagemaker("Bedrock\n(Claude/Titan)")
+    with Cluster("Storage", graph_attr={"bgcolor": "#449dab40"}):
+        dynamodb = Dynamodb("DynamoDB")
+        s3 = S3("S3")
     
-    with Cluster("Storage"):
-        dynamodb = Dynamodb("DynamoDB\n(Items)")
-        raw_media_s3 = S3("S3 Raw\nMedia")
-        transcripts_s3 = S3("S3\nTranscripts")
+    # Main Flow: Share TikTok
+    user >> Edge(label="1. Share\nTikTok", color="#7aa2f7") >> telegram
+    telegram >> Edge(label="2. Webhook", color="#7aa2f7") >> api_gateway
+    api_gateway >> Edge(label="3. Process", color="#7aa2f7") >> lambdas
+    lambdas >> Edge(label="4. Queue", color="#7aa2f7") >> process_queue
     
-    # Flow: User sends TikTok link via Telegram
-    user >> Edge(label="1. Share TikTok") >> telegram
-    telegram >> Edge(label="2. Webhook") >> api_gateway
-    api_gateway >> telegram_lambda
+    # Processing Flow
+    process_queue >> Edge(label="5. Trigger", color="#9d7cd8") >> lambdas
+    lambdas >> Edge(label="6. Save\nMedia", color="#9d7cd8") >> s3
+    lambdas >> Edge(label="7. Transcribe", color="#9d7cd8") >> google_speech
+    google_speech >> Edge(label="8. Text", color="#9d7cd8") >> lambdas
+    lambdas >> Edge(label="9. Classify", color="#9d7cd8") >> bedrock
+    bedrock >> Edge(label="10. Result", color="#9d7cd8") >> lambdas
+    lambdas >> Edge(label="11. Update", color="#9d7cd8") >> dynamodb
     
-    # Flow: Lambda processes and queues
-    telegram_lambda >> Edge(label="3. Create item") >> dynamodb
-    telegram_lambda >> Edge(label="4. Queue job") >> process_queue
-    
-    # Flow: Process TikTok (All-in-one)
-    process_queue >> Edge(label="5. Trigger") >> process_lambda
-    process_lambda >> Edge(label="6. Download") >> raw_media_s3
-    
-    # Flow: Transcription & Classification (in same Lambda)
-    process_lambda >> Edge(label="7. Transcribe") >> google_speech
-    google_speech >> Edge(label="8. Text") >> process_lambda
-    process_lambda >> Edge(label="9. Classify") >> bedrock
-    bedrock >> Edge(label="10. Result") >> process_lambda
-    
-    # Flow: Save and Update
-    process_lambda >> Edge(label="11. Save transcript") >> transcripts_s3
-    process_lambda >> Edge(label="12. Update item") >> dynamodb
-    
-    # Error handling
-    process_queue >> Edge(label="errors", style="dashed", color="red") >> dlq
-    
-    # Flow: User views items
-    user >> Edge(label="12. Browse") >> react
-    react >> api_gateway
-    api_gateway >> get_items_lambda
-    get_items_lambda >> Edge(label="13. Query") >> dynamodb
-    
-    # CRUD operations
-    api_gateway >> get_item_lambda >> dynamodb
-    api_gateway >> delete_lambda >> dynamodb
+    # User Viewing Flow
+    user >> Edge(label="12. Browse", color="#449dab") >> react
+    react >> Edge(label="", color="#449dab") >> cognito
+    cognito >> Edge(label="", color="#449dab") >> amplify
+    react >> Edge(label="13. Fetch", color="#449dab") >> api_gateway
+    api_gateway >> Edge(label="", color="#449dab") >> lambdas
+    lambdas >> Edge(label="", color="#449dab") >> dynamodb
 
 print("✅ Diagram generated: public/mindpocket_architecture.png")
