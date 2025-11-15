@@ -4,12 +4,12 @@ Página web de presentación para MindPocket, creada con Vite+React y hosteada e
 
 ## 🚀 Características
 
-- **12 slides interactivas** con el pitch completo de MindPocket
+- **13 slides interactivas** con el pitch completo de MindPocket
 - **Diseño dark mode** inspirado en Raycast
 - **Navegación con teclado** usando flechas ← →
 - **Interfaz limpia** sin distracciones, solo contador de slides
 - **Responsive** y optimizado para presentaciones
-- **Embed de la app** en https://mindpocket.lolorein.com
+- **App embebida** - Prueba MindPocket directamente desde la presentación
 
 ## 🛠️ Tecnologías
 
