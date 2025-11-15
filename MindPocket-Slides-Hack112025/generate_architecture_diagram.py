@@ -75,12 +75,11 @@ with Diagram(
     with Cluster("Processing"):
         process_queue = SQS("Process\nQueue")
         dlq = SQS("Dead Letter\nQueue")
-        process_lambda = Lambda("Process\nTikTok")
-        transcribe_callback = Lambda("Transcribe\nCallback")
+        process_lambda = Lambda("Process\nTikTok\n(All-in-one)")
     
     with Cluster("AI Services"):
-        transcribe = Transcribe("Google Speech\n(Transcription)")
-        bedrock = Sagemaker("Bedrock\n(Claude AI)")
+        google_speech = Sagemaker("Google Speech\n(Transcription)")
+        bedrock = Sagemaker("Bedrock\n(Claude/Titan)")
     
     with Cluster("Storage"):
         dynamodb = Dynamodb("DynamoDB\n(Items)")
@@ -96,18 +95,19 @@ with Diagram(
     telegram_lambda >> Edge(label="3. Create item") >> dynamodb
     telegram_lambda >> Edge(label="4. Queue job") >> process_queue
     
-    # Flow: Process TikTok
+    # Flow: Process TikTok (All-in-one)
     process_queue >> Edge(label="5. Trigger") >> process_lambda
-    process_lambda >> Edge(label="6. Save media") >> raw_media_s3
+    process_lambda >> Edge(label="6. Download") >> raw_media_s3
     
-    # Flow: Transcription
-    process_lambda >> Edge(label="7. Audio") >> transcribe
-    transcribe >> Edge(label="8. Callback") >> transcribe_callback
-    transcribe_callback >> Edge(label="9. Save") >> transcripts_s3
+    # Flow: Transcription & Classification (in same Lambda)
+    process_lambda >> Edge(label="7. Transcribe") >> google_speech
+    google_speech >> Edge(label="8. Text") >> process_lambda
+    process_lambda >> Edge(label="9. Classify") >> bedrock
+    bedrock >> Edge(label="10. Result") >> process_lambda
     
-    # Flow: AI Classification
-    transcribe_callback >> Edge(label="10. Classify") >> bedrock
-    bedrock >> Edge(label="11. Update") >> dynamodb
+    # Flow: Save and Update
+    process_lambda >> Edge(label="11. Save transcript") >> transcripts_s3
+    process_lambda >> Edge(label="12. Update item") >> dynamodb
     
     # Error handling
     process_queue >> Edge(label="errors", style="dashed", color="red") >> dlq

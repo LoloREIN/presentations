@@ -23,7 +23,7 @@ export default function Slide5() {
             </div>
             <h3 className="text-2xl font-semibold">1. Compartes</h3>
             <p className="text-muted-foreground">
-              Desde TikTok → compartir → WhatsApp o app → envías el link a tu bot
+              Desde TikTok → compartir → Telegram → envías el link a tu bot personal
             </p>
           </div>
 
@@ -33,7 +33,7 @@ export default function Slide5() {
             </div>
             <h3 className="text-2xl font-semibold">2. Procesamos</h3>
             <p className="text-muted-foreground">
-              Descarga el audio, lo manda a Transcribe, luego a Bedrock, lo clasifica
+              Descarga el video, extrae audio con voz, transcribe con Google Speech, clasifica con Bedrock AI
             </p>
           </div>
 

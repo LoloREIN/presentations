@@ -24,7 +24,7 @@ export default function Slide8() {
                 Estás en TikTok, ves una receta de desayuno proteico.
               </p>
               <p className="text-lg text-foreground">
-                → La compartes al WhatsApp de MindPocket
+                → La compartes a tu bot de Telegram de MindPocket
               </p>
             </div>
           </div>

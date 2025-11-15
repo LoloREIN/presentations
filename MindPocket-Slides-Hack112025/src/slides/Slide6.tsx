@@ -55,7 +55,7 @@ export default function Slide6() {
             <h3 className="text-sm font-semibold">Datos & AI</h3>
           </div>
           <p className="text-xs text-muted-foreground">
-            S3 + Transcribe + Bedrock
+            S3 + Google Speech + Bedrock
           </p>
         </div>
 

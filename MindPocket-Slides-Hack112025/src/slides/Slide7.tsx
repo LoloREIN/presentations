@@ -70,11 +70,15 @@ export default function Slide7() {
             </li>
             <li className="flex items-start gap-3">
               <span className="text-chart-3 text-2xl">•</span>
-              <span className="text-muted-foreground">Amazon Transcribe (audio → texto)</span>
+              <span className="text-muted-foreground">Google Speech-to-Text (multi-idioma)</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-chart-3 text-2xl">•</span>
-              <span className="text-muted-foreground">Amazon Bedrock (Claude Sonnet) para IA</span>
+              <span className="text-muted-foreground">Amazon Bedrock (Claude/Titan) para clasificación</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-chart-3 text-2xl">•</span>
+              <span className="text-muted-foreground">Sistema de reintentos y manejo de errores robusto</span>
             </li>
           </ul>
         </div>
@@ -87,7 +91,11 @@ export default function Slide7() {
           <ul className="space-y-3 text-lg">
             <li className="flex items-start gap-3">
               <span className="text-chart-4 text-2xl">•</span>
-              <span className="text-muted-foreground">WhatsApp Cloud API para recibir links</span>
+              <span className="text-muted-foreground">Telegram Bot API para compartir links</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-chart-4 text-2xl">•</span>
+              <span className="text-muted-foreground">TikWM API con sistema de retry automático</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-chart-4 text-2xl">•</span>

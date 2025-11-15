@@ -30,7 +30,7 @@ export default function Slide4() {
             <h3 className="text-2xl font-semibold">Compartes el video</h3>
           </div>
           <p className="text-lg text-muted-foreground pl-13">
-            Desde TikTok → compartir → WhatsApp/app → envías el link
+            Desde TikTok → compartir → Telegram → envías el link a tu bot
           </p>
         </div>
 
