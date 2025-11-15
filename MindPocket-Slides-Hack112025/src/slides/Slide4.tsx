@@ -1,4 +1,4 @@
-import { Lightbulb, Link2, Sparkles, LayoutDashboard } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
 
 export default function Slide4() {
   return (
