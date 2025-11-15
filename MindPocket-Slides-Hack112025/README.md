@@ -57,13 +57,36 @@ pulumi up
 3. **Audiencia** - Jóvenes motivados pero saturados
 4. **Solución** - MindPocket como puente TikTok → vida real
 5. **Flujo** - De un link a una acción en 4 pasos
-6. **Arquitectura** - Serverless en AWS
+6. **Arquitectura** - Serverless en AWS (con diagrama visual)
 7. **Stack** - Tecnología moderna y escalable
 8. **Demo** - Un día con MindPocket
 9. **Beneficios** - Del hype a hábitos
 10. **Modelo de negocio** - Freemium B2C y B2B2C
 11. **Roadmap** - Futuro del producto
 12. **Cierre** - Call to action
+13. **Demo Interactivo** - App embebida con QR codes
+
+## 🏗️ Diagrama de Arquitectura
+
+La Slide 6 incluye un diagrama de arquitectura generado con [diagrams](https://diagrams.mingrammer.com/). Para regenerar el diagrama:
+
+```bash
+# Instalar dependencias (solo primera vez)
+pip3 install diagrams
+
+# Verificar que Graphviz esté instalado
+brew install graphviz
+
+# Generar diagrama
+python3 generate_architecture_diagram.py
+```
+
+El diagrama se guardará en `public/mindpocket_architecture.png` y muestra:
+- Frontend: Amplify, Cognito, Next.js
+- Backend: API Gateway, Lambda, SQS
+- Storage: DynamoDB, S3
+- AI: Google Speech-to-Text, AWS Bedrock
+- Integraciones: Telegram Bot
 
 ## 🎨 Estilo
 
